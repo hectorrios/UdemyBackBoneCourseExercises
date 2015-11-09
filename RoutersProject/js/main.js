@@ -31,6 +31,14 @@ var Vehicles = Backbone.Collection.extend({
     model: Vehicle,
 });
 
+var Car = Vehicle.extend();
+
+var Cars = Vehicles.extend();
+
+var Boat = Vehicle.extend();
+
+var Boats = Vehicles.extend();
+
 
 /********************
  *
@@ -39,6 +47,17 @@ var Vehicles = Backbone.Collection.extend({
 
 
 var eventBus = _.extend({}, Backbone.Events);
+
+var HomeView = Backbone.View.extend({
+    render: function () {
+        var source = $('#home-template').html();
+        var template = _.template(source);
+
+        this.$el.html(template());
+
+        return this;
+    }
+});
 
 var VehicleView = Backbone.View.extend({
     tagName: 'li',
@@ -123,6 +142,38 @@ var VehiclesView = Backbone.View.extend({
 
 });
 
+var CarView = Backbone.View.extend({
+    tagName: 'li',
+
+    render: function () {
+        var source = $('#car-template').html();
+        var template = _.template(source);
+
+        this.$el.html(template(this.model.toJSON()));
+
+        return this;
+    }
+});
+
+var CarsView = Backbone.View.extend({
+    tagName: 'ul',
+
+    render: function () {
+        if (this.model) {
+            this.model.each(function (car) {
+                var carView = new CarView({
+                    model: car
+                });
+
+                this.$el.append(carView.render().$el);
+
+            }, this);
+        }
+
+        return this;
+    }
+})
+
 var NewVehicleView = Backbone.View.extend({
 
     bus: undefined,
@@ -157,21 +208,64 @@ var NewVehicleView = Backbone.View.extend({
 
 /* Start Application Logic */
 
-var vehicles = new Vehicles([
+
+//var vehicles = new Vehicles([
+//    {registrationNumber: '9459485', id:'1', color: 'red'},
+//    {registrationNumber: '9459486', id:'2', color: 'blue'},
+//    {registrationNumber: '9459487', id:'3', color: 'white'},
+//    {registrationNumber: '9459488', id:'4', color: 'purple'}
+//]);
+//
+//var vehiclesView = new VehiclesView({
+//    model: vehicles,
+//    bus: eventBus
+//});
+//
+//var newVehicleView = new NewVehicleView({
+//    bus: eventBus
+//});
+//
+//var cars = new Cars([
+//    {registrationNumber: '9459485', id:'1', color: 'pink'},
+//    {registrationNumber: '9459486', id:'2', color: 'cyan'}
+//]);
+
+//$('#app-container').append(newVehicleView.render().$el);
+//$('#vehicles').html(vehiclesView.render().$el);
+
+
+var cars = new Cars([
     {registrationNumber: '9459485', id:'1', color: 'red'},
     {registrationNumber: '9459486', id:'2', color: 'blue'},
     {registrationNumber: '9459487', id:'3', color: 'white'},
     {registrationNumber: '9459488', id:'4', color: 'purple'}
 ]);
 
-var vehiclesView = new VehiclesView({
-    model: vehicles,
-    bus: eventBus
+//Define the router
+var AppRouter = Backbone.Router.extend({
+    routes: {
+        "home": "showHome",
+        "cars": "showCars"
+    },
+
+    showHome: function () {
+        $('#app-container').empty();
+        console.log('show home route called');
+        var homeView = new HomeView();
+        $('#app-container').append(homeView.render().$el);
+    },
+
+    showCars: function () {
+        $('#app-container').empty();
+        var carsView = new CarsView({
+            model: cars
+        });
+
+        $('#app-container').append(carsView.render().$el);
+    }
 });
 
-var newVehicleView = new NewVehicleView({
-    bus: eventBus
-});
+var router = new AppRouter();
 
-$('#app-container').append(newVehicleView.render().$el);
-$('#vehicles').html(vehiclesView.render().$el);
+//Tell Backbone to start monitoring address changes
+Backbone.history.start();
