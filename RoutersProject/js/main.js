@@ -172,7 +172,37 @@ var CarsView = Backbone.View.extend({
 
         return this;
     }
-})
+});
+
+var BoatView = Backbone.View.extend({
+
+    tagName: 'li',
+
+    render: function () {
+        var source = $('#boat-template').html();
+        var template = _.template(source);
+
+        this.$el.html(template(this.model.toJSON()));
+
+        return this;
+    }
+});
+
+var BoatsView = Backbone.View.extend({
+    tagName: 'ul',
+
+    render: function () {
+        this.model.each(function (model) {
+            var boatView = new BoatView({
+                model: model
+            });
+
+            this.$el.append(boatView.render().$el);
+        }, this);
+
+        return this;
+    }
+});
 
 var NewVehicleView = Backbone.View.extend({
 
@@ -241,11 +271,19 @@ var cars = new Cars([
     {registrationNumber: '9459488', id:'4', color: 'purple'}
 ]);
 
+var boats = new Boats([
+    {registrationNumber: '00001', id:'6', color: 'yellow'},
+    {registrationNumber: '00002', id:'7', color: 'pink'},
+    {registrationNumber: '00003', id:'8', color: 'white'},
+    {registrationNumber: '00004', id:'9', color: 'black'}
+]);
+
 //Define the router
 var AppRouter = Backbone.Router.extend({
     routes: {
         "home": "showHome",
-        "cars": "showCars"
+        "cars": "showCars",
+        "boats": "showBoats"
     },
 
     showHome: function () {
@@ -262,6 +300,15 @@ var AppRouter = Backbone.Router.extend({
         });
 
         $('#app-container').append(carsView.render().$el);
+    },
+
+    showBoats: function () {
+        $('#app-container').empty();
+        var boatsView = new BoatsView({
+            model: boats
+        });
+
+        $('#app-container').append(boatsView.render().$el);
     }
 });
 
