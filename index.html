@@ -16,9 +16,9 @@
 <body>
 <div id="app-container"></div>
 <div id="vehicles"></div>
-<script src="js/lib/jquery-min.js"></script>
-<script src="js/lib/underscore-min.js"></script>
-<script src="js/lib/backbone-min.js"></script>
+
+<script src="js/lib/require.js" data-main="js/main"></script>
+
 <script type="text/html" id="vehicle-template">
     <div>
         <span><%= registrationNumber %></span>
@@ -32,7 +32,6 @@
     <button>Add</button>
 </script>
 
-<script src="js/main.js"></script>
 
 </body>
 </html>

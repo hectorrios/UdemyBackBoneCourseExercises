@@ -2,6 +2,13 @@
  * Created by juice on 11/19/15.
  */
 
-var Vehicles = Backbone.Collection.extend({
-    model: Vehicle,
+define(['underscore',
+    'backbone',
+    'models/vehicle'], function (_, Backbone, Vehicle) {
+
+    var Vehicles = Backbone.Collection.extend({
+        model: Vehicle,
+    });
+
+    return Vehicles;
 });

@@ -2,34 +2,41 @@
  * Created by juice on 11/19/15.
  */
 
-var NewVehicleView = Backbone.View.extend({
+define(['jquery',
+        'underscore',
+        'backbone'], function ($, _, Backbone) {
 
-    bus: undefined,
+    var NewVehicleView = Backbone.View.extend({
 
-    initialize: function (options) {
-        this.bus = options.bus;
-        this.bus.on('add-confirmation', this.addConfirmed, this);
-    },
+        bus: undefined,
 
-    events: {
-        'click button': 'handleAdd'
-    },
+        initialize: function (options) {
+            this.bus = options.bus;
+            this.bus.on('add-confirmation', this.addConfirmed, this);
+        },
 
-    render: function () {
-        var source = $('#new-vehicle-template').html();
-        var template = _.template(source);
-        this.$el.html(template());
-        return this;
-    },
+        events: {
+            'click button': 'handleAdd'
+        },
 
-    handleAdd: function () {
-        var vehicle = this.$el.find('#new-vehicle-entry').val();
-        console.log('The value of the new vehicle is: ', vehicle);
-        this.bus.trigger('new-vehicle', vehicle);
-    },
+        render: function () {
+            var source = $('#new-vehicle-template').html();
+            var template = _.template(source);
+            this.$el.html(template());
+            return this;
+        },
 
-    addConfirmed: function () {
-        //clear out the textbox
-        this.$el.find('#new-vehicle-entry').val('');
-    }
+        handleAdd: function () {
+            var vehicle = this.$el.find('#new-vehicle-entry').val();
+            console.log('The value of the new vehicle is: ', vehicle);
+            this.bus.trigger('new-vehicle', vehicle);
+        },
+
+        addConfirmed: function () {
+            //clear out the textbox
+            this.$el.find('#new-vehicle-entry').val('');
+        }
+    });
+
+    return NewVehicleView;
 });
