@@ -18,6 +18,8 @@
     <a href="#home">Home</a>
     <a href="#boats">Boats</a>
     <a href="#cars">Cars</a>
+    <a href="#heckie">Heckie</a>
+    <a href="#login">Login</a>
 </nav>
 
 <div id="app-container"></div>
@@ -42,6 +44,19 @@
 
 <script type="text/html" id="boat-template">
     <p><%= registrationNumber %> -- <%= color %></p>
+</script>
+
+<script type="text/html" id="heckie-template">
+    <h2>Heckie in Da house!</h2>
+</script>
+
+<script type="text/html" id="login-template">
+    <form>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+
+        <input type="submit" value="Login">
+    </form>
 </script>
 
 <script src="js/main.js"></script>

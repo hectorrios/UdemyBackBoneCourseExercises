@@ -59,6 +59,28 @@ var HomeView = Backbone.View.extend({
     }
 });
 
+var HeckieView = Backbone.View.extend({
+   render: function () {
+       var source = $('#heckie-template').html();
+       var template = _.template(source);
+
+       this.$el.html(template());
+
+       return this;
+   }
+});
+
+var LoginView = Backbone.View.extend({
+    render: function () {
+        var source = $('#login-template').html();
+        var template = _.template(source);
+
+        this.$el.html(template());
+
+        return this;
+    }
+})
+
 var VehicleView = Backbone.View.extend({
     tagName: 'li',
     className: 'vehicle',
@@ -268,7 +290,8 @@ var cars = new Cars([
     {registrationNumber: '9459485', id:'1', color: 'red'},
     {registrationNumber: '9459486', id:'2', color: 'blue'},
     {registrationNumber: '9459487', id:'3', color: 'white'},
-    {registrationNumber: '9459488', id:'4', color: 'purple'}
+    {registrationNumber: '9459488', id:'4', color: 'purple'},
+    {registrationNumber: '6877888', id:'5', color: 'black'}
 ]);
 
 var boats = new Boats([
@@ -283,7 +306,9 @@ var AppRouter = Backbone.Router.extend({
     routes: {
         "home": "showHome",
         "cars": "showCars",
-        "boats": "showBoats"
+        "boats": "showBoats",
+        "heckie": "showHeckie",
+        "login": 'showLogin'
     },
 
     showHome: function () {
@@ -309,7 +334,20 @@ var AppRouter = Backbone.Router.extend({
         });
 
         $('#app-container').append(boatsView.render().$el);
-    }
+    },
+
+    showHeckie: function () {
+        $('#app-container').empty();
+        var heckieView = new HeckieView();
+        $('#app-container').append(heckieView.render().$el);
+    },
+
+    showLogin: function () {
+        $('#app-container').empty();
+        console.log('show login route called');
+        var loginView = new LoginView();
+        $('#app-container').append(loginView.render().$el);
+    },
 });
 
 var router = new AppRouter();
